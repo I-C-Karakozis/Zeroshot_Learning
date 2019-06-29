@@ -43,7 +43,7 @@ def measure_performance(dataset, neigh, inputs, labels, method):
     acc = 100 * correct / total
 
     # log performance
-    print('{} | Class Accuracy: {:.2f}% ({}/{})'.format(method, acc, correct, int(total)))
+    print('{} | Animal Class Recognition Accuracy: {:.2f}% ({}/{})'.format(method, acc, correct, int(total)))
     sys.stdout.flush()
 
     # generate predictions txt
@@ -108,7 +108,7 @@ def __test(dataset, attr_vectors, class_targets, outputs, preds, per_attr_acc, t
     good_attr_id = []
     for attr_id, acc in enumerate(per_attr_acc):
         if acc > threshold: good_attr_id.append(attr_id)
-    print('Evaluating @{:.2f} attribute accuracy using {} attributes.'.format(threshold, len(good_attr_id)))
+    print('Evaluating @{:.2f} using {} attributes.'.format(threshold /100, len(good_attr_id)))
 
     # get values corresponding to good attributes
     attr_vectors = get_good_attr(attr_vectors, good_attr_id)
@@ -187,6 +187,7 @@ def evaluate(args, net, device, dataset, dataloader):
     if args.debug: targets = np.array(dataset.lbls)[:args.batch_size, :-1]
 
     # measure animal attribute accuracy
+    print("Attribute Classification Accuracy Breakdown:"); print_border()
     correct = np.sum(np.equal(preds, targets), axis=0)
     total = len(preds)
     per_attr_acc = 100 * correct / total
@@ -196,7 +197,7 @@ def evaluate(args, net, device, dataset, dataloader):
     print_border()
 
     # measure mean per class attribute accuracy
-    print("Mean per Class Attribute Accuracy: ", np.mean(per_attr_acc))
+    print("Mean per Class Attribute Classification Accuracy: ", np.mean(per_attr_acc))
     print_border()
 
     # get groundtruth values
@@ -205,7 +206,7 @@ def evaluate(args, net, device, dataset, dataloader):
     if args.debug: class_targets = np.array(dataset.lbls)[:args.batch_size, -1].squeeze()
 
     # evaluate over multiple possible thresholds
-    thresholds = [0] + [i for i in range(50, 95, 5)]
+    thresholds = [i for i in range(50, 95, 5)]
     for threshold in thresholds:
         __test(dataset, attr_vectors, class_targets, outputs, preds, per_attr_acc, threshold)
 
@@ -213,6 +214,7 @@ def evaluate(args, net, device, dataset, dataloader):
 
 def pipeline(args):
     # load data
+    print_border()
     if args.debug: args.batch_size = 2
     trainset, testset = get_data(args.datadir)
     trainloader, testloader = get_dataloaders(args.batch_size, trainset, testset)
