@@ -1,0 +1,11 @@
+*.pickle
+*.pyc
+venv/*
+
+data/*
+logging/*
+models/*
+predictions/*
+results_out/*
+results/*
+slurm_scripts/*
