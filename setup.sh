@@ -1,7 +1,3 @@
-# setup slurm scripts
-mkdir slurm_scripts
-python generate_slurm_scripts.py
-
 # setup directories
 mkdir figures
 mkdir logging
