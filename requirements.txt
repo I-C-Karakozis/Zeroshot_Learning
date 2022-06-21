@@ -4,7 +4,7 @@ kiwisolver==1.0.1
 matplotlib==3.0.3
 memory-profiler==0.55.0
 networkx==2.2
-numpy==1.16.1
+numpy==1.22.0
 Pillow==5.4.1
 psutil==5.5.1
 pyparsing==2.3.1
